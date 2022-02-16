@@ -8,11 +8,11 @@ import * as CodeMirrorCollabExt from '@convergencelabs/codemirror-collab-ext';
 
 const CodeEditor = () => {
   const [sessionParams, setSessionParams] = useState(null);
-  // const editorArea = React.useRef<HTMLTextAreaElement | null>(null); 
+  const editorArea = React.useRef(null); 
 
   useEffect(() => {      
     const editor = CodeMirror.fromTextArea(
-      document.getElementById("code-editor"), 
+      editorArea.current,
       {
         lineNumbers: true,
         lineWrapping: true,
@@ -22,10 +22,15 @@ const CodeEditor = () => {
     );
     editor.setSize("100%", "40vh");
     editor.setValue("// Hello World!");
-    
-    const contentManager = new CodeMirrorCollabExt.EditorContentManager({
+   
+    editor.on('change', (instance, { origin }) => {
+      if (origin !== 'setValue') {
+        console.log(instance.getValue());
+      }
+    });
+   
+   const contentManager = new CodeMirrorCollabExt.EditorContentManager({
       editor: editor,
-      id: 'source',
       onInsert(index, text) {
         console.log("Insert", index, text);
       },
@@ -35,24 +40,17 @@ const CodeEditor = () => {
       onDelete(index, length) {
         console.log("Delete", index, length);
       }
-    }); 
-   
+  }); 
 
-    editor.on('change', (instance, { origin }) => {
-      if (origin !== 'setValue') {
-        console.log(instance.getValue());
-      }
-    });
-
-    return () => {
+  return () => {
       editor.toTextArea();
       contentManager.dispose();
     }
   }, [sessionParams]);
 
   return (
-    <div className="code-editor">
-      <textarea id="code-editor" />
+    <div>
+      <textarea ref={editorArea} />
     </div>
   );
 };

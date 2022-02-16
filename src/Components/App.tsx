@@ -1,5 +1,5 @@
 import React from 'react';
-import Editor from './Editor';
+import CodeEditor from './CodeEditor';
 import {Container, Row, Col} from 'react-bootstrap';
 import './App.css';
 
@@ -13,17 +13,17 @@ function App() {
         <Row>
           <Col className="m-auto">
             <h3> Server: </h3>
-            <Editor />
+            <CodeEditor />
           </Col>
         </Row>
         <Row>
           <Col className="column-left">
             <h3> User 1: </h3>
-            <Editor />
+            <CodeEditor />
           </Col>
           <Col className="column-right">
             <h3> User 2: </h3>
-            <Editor />
+            <CodeEditor />
           </Col>
         </Row>
       </Container>
@@ -32,3 +32,4 @@ function App() {
 }
 
 export default App;
+
